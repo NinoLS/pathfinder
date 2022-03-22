@@ -7,7 +7,8 @@ class Utils{
         <style>
             td { width:90px; }
             td input[type=number] { width: 50%; margin-bottom:10%;}
-
+            .b-red{border: 3px solid red;}
+            .b-blue{border: 3px solid blue;}
         </style>
 
         <?php
@@ -21,18 +22,22 @@ class Utils{
                 $(".A_cbx").change(function(){
                     if($(this).is(":checked")){
                         $(".A_cbx").attr("disabled", "");
+                        $(this).parent().find(".w-small").addClass("b-blue");
                         $(this).removeAttr("disabled");
                     } else {
                         $(".A_cbx").removeAttr("disabled");
+                        $(".b-blue").removeClass("b-blue");
                     }
 
                 });
                 $(".B_cbx").change(function(){
                     if($(this).is(":checked")){
                         $(".B_cbx").attr("disabled", "");
+                        $(this).parent().find(".w-small").addClass("b-red");
                         $(this).removeAttr("disabled");
                     } else {
                         $(".B_cbx").removeAttr("disabled");
+                        $(".b-red").removeClass("b-red");
                     }
 
                 });

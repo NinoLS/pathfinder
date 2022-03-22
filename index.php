@@ -4,6 +4,6 @@
     Utils::chargerStyle();
     Utils::chargerScripts();
 
-    $p = new Plateau(5,5);
+    $p = new Plateau(8,8);
 
 ?>

@@ -43,10 +43,22 @@ class Utils{
                 });
             })
 
+            function appliquerPoids(){
+                let val = $("#poids_global").val();
+                $("input[type='number']").val(val);
+            }
+
         </script>
         <?php
     }
 
+    public static function chargerReglages(){
+        ?>
+        <input type="number" id="poids_global">
+        <input type="button" value="Appliquer" onclick="appliquerPoids()">
+
+        <?php
+    }
 }
 
 ?>

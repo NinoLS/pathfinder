@@ -36,9 +36,9 @@ class Plateau{
                 for ($j=0; $j < $this->y; $j++) { 
                     echo "
                     <td>
-                        <input class='A_cbx' type='checkbox' id='{$this->x}_{$this->y}_A'>
-                        <input class='B_cbx' type='checkbox' id='{$this->x}_{$this->y}_B'>
-                        <input class='w-small' type='number' id='{$this->x}_{$this->y}_n'>
+                        <input class='A_cbx' type='checkbox' id='{$i}_{$j}_A'>
+                        <input class='B_cbx' type='checkbox' id='{$i}_{$j}_B'>
+                        <input class='w-small' type='number' id='{$i}_{$j}_n'>
                     </td>
                     ";
                 }

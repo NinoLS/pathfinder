@@ -48,6 +48,19 @@ class Utils{
                 $("input[type='number']").val(val);
             }
 
+            function lancerAlgo(){
+                let xA = parseFloat($(".A_cbx:checked").attr("id").split("_")[0]);
+                let yA = parseFloat($(".A_cbx:checked").attr("id").split("_")[1]);
+                let xB = parseFloat($(".B_cbx:checked").attr("id").split("_")[0]);
+                let yB = parseFloat($(".B_cbx:checked").attr("id").split("_")[1]);
+
+                //trouver voisin
+                
+            }
+
+            function trouverPoids(x,y){
+                return $("#"+x+"_"+y+"_"+"n").val();
+            }
         </script>
         <?php
     }
@@ -56,6 +69,7 @@ class Utils{
         ?>
         <input type="number" id="poids_global">
         <input type="button" value="Appliquer" onclick="appliquerPoids()">
+        <input type="button" value="Lancer" onclick="lancerAlgo()">
 
         <?php
     }

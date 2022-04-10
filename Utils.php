@@ -3,11 +3,15 @@
 class Utils{
     public static $X_DEFAULT = 8;
     public static $Y_DEFAULT = 8;
+    public static $TD_WIDTH_PX = 60;
+    public static $TD_HEIGHT_PX = 60;
 
     public static function chargerStyle(){
         ?>
         <style>
-            td { width:60px; }
+            *{ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
+            td { border: 1px solid black;}
+            td { width:<?=self::$TD_WIDTH_PX?>px; height:<?=self::$TD_HEIGHT_PX?>px; }
             td input[type=number] { width: 75%; margin-bottom:10%;}
             .b-red{border: 3px solid red;}
             .b-blue{border: 3px solid blue;}
@@ -30,6 +34,10 @@ class Utils{
             var yA;
             var xB;
             var yB;
+
+            const PUT_FLAG_BEGIN = 0;
+            const PUT_COSTS = 1;
+            const PUT_FLAG_END = 2;
 
             $(document).ready(function(){
                 couts = new Object();
@@ -59,7 +67,82 @@ class Utils{
                     }
 
                 });
-            })
+
+                //depart
+                $("td").on({
+                        mouseenter: function() {
+                            caseMouseEnter($(this));
+                        },
+                        click: function(){
+                            caseMouseClick($(this));
+                        },
+                        mouseleave: function() {
+                            caseMouseLeave($(this));
+                        }
+                });
+            });
+
+            function getStep(){
+                return parseInt($("#step").val());
+            }
+            function incrementStep(){
+                $("#step").val(parseInt($("#step").val())+1);
+            }
+
+            function caseMouseEnter(td){
+                switch (getStep()) {
+                    case PUT_FLAG_BEGIN:
+                        td.find("img")
+                            .attr("src","./images/depart.png")
+                            .attr("width", "<?=self::$TD_WIDTH_PX-7?>px")
+                            .attr("heigth", "<?=self::$TD_HEIGHT_PX-7?>px")
+                            .attr("style", "opacity:0.5;");
+                        break;
+                
+                    case PUT_COSTS:
+                        break;
+                    
+                    case PUT_FLAG_END:
+                        break;
+                }
+            }
+            function caseMouseClick(td){
+                switch (getStep()) {
+                    case PUT_FLAG_BEGIN:
+                        td.find("img")
+                            .removeClass("put_flag")
+                            .attr("src","./images/depart.png")
+                            .attr("width", "<?=self::$TD_WIDTH_PX-7?>px")
+                            .attr("heigth", "<?=self::$TD_HEIGHT_PX-7?>px")
+                            .attr("style", "opacity:1;");
+                        incrementStep();
+                        break;
+                
+                    case PUT_COSTS:
+                        break;
+                    
+                    case PUT_FLAG_END:
+                        break;
+                }
+
+            }
+            function caseMouseLeave(td){
+                switch (getStep()) {
+                    case PUT_FLAG_BEGIN:
+                        td.find("img")
+                            .attr("src","")
+                            .attr("width", "0px")
+                            .attr("heigth", "0px")
+                        break;
+                
+                    case PUT_COSTS:
+                        break;
+                    
+                    case PUT_FLAG_END:
+                        break;
+                }
+                
+            }
 
             function appliquerPoids(){
                 let val = $("#poids_global").val();
@@ -155,6 +238,8 @@ class Utils{
             function colorerCase(xD,yD){
                 $("#"+yD+"_"+xD+"_n").addClass("b-green");
             }
+
+            
         </script>
         <?php
     }
@@ -164,7 +249,7 @@ class Utils{
         <input type="number" id="poids_global">
         <input type="button" value="Appliquer" onclick="appliquerPoids()">
         <input type="button" value="Lancer" onclick="lancerAlgo()">
-
+        <input type="hidden" value="0" id="step">
         <?php
     }
 }

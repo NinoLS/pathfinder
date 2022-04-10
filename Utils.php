@@ -7,8 +7,8 @@ class Utils{
     public static function chargerStyle(){
         ?>
         <style>
-            td { width:90px; }
-            td input[type=number] { width: 50%; margin-bottom:10%;}
+            td { width:60px; }
+            td input[type=number] { width: 75%; margin-bottom:10%;}
             .b-red{border: 3px solid red;}
             .b-blue{border: 3px solid blue;}
             .b-green{ border: 2px solid green;}

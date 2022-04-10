@@ -26,7 +26,7 @@ class Utils{
                 width:50%;
                 border-width: 2px 2px 0px 0; 
             }
-            .left_top{
+            .top_left{
                 margin:0 0 45% 0;
                 width:50%;
                 border-width: 0px 2px 2px 0; 
@@ -36,17 +36,17 @@ class Utils{
                 width:50%;
                 border-width: 0px 0px 2px 2px; 
             }
-            .right_bottom{
+            .bottom_right{
                 margin:45% 0 0 45%;
                 width:50%;
                 border-width: 2px 0px 0px 2px; 
             }
-            .hori{
+            .left_right{
                 margin:45% 0 0 0;
                 width:100%;
                 border-width: 2px 0px 0px 0px; 
             }
-            .vert{
+            .bottom_top{
                 margin:0 45% 0 0;
                 width:50%;
                 height:100%;
@@ -291,21 +291,74 @@ class Utils{
             }
 
             function colorerLesCases(chemins){
-                var xTmp = xB;
-                var yTmp = yB;
-                var idTmp = "";
-                while(xTmp != xA || yTmp != yA){
-                    idTmp = chemin[xTmp+"_"+yTmp].split("_");
-                    xTmp = idTmp[0];
-                    yTmp = idTmp[1];
-                    colorerCase(xTmp,yTmp);
+                var xBefore = xB;
+                var yBefore = yB;
+                
+                var idTmp = chemin[xBefore+"_"+xBefore].split("_");
+                var xActual = idTmp[0];
+                var yActual = idTmp[1];
+                
+                var xAfter = "";
+                var yAfter = "";
+
+                //classe
+                let from_to = ""; 
+                while(xBefore != xA || yBefore != yA){
+                    //set afters
+                    idTmp = chemin[xActual+"_"+yActual].split("_");
+                    xAfter = idTmp[0];
+                    yAfter = idTmp[1];
+
+                    //si case précédente à gauche de la case actuelle
+                    if(xBefore < xActual){
+                        //si case d'après au-dessus de la case actuelle
+                        if(yActual < yAfter){
+                            from_to = "top_left";
+                        } else {
+                            //si case d'après en-dessous de la case actuelle
+                            if(yActual > yAfter){
+                                from_to = "bottom_left";
+                            } else { //case au meme niveau
+                                    console.log(xBefore + " _ " + yBefore);
+                                    console.log(xActual + " _ " + yActual);
+                                    console.log(xAfter + " _ " + yAfter);
+                                from_to = "left_right";
+                            }
+                        }
+                    } else {
+                        //si la case précédente à droite de la case actuelle
+                        if(xBefore > xActual){
+                            //si case d'après au-dessus de la case actuelle
+                            if(yActual < yAfter){
+                                from_to = "top_right";
+                            } else {
+                                //si case d'après en-dessous de la case actuelle
+                                if(yActual > yAfter){
+                                    from_to = "bottom_right";
+                                } else { //case au meme niveau
+                                    from_to = "left_right";
+                                }
+                            }
+                        } else { 
+                            from_to = "bottom_top";
+                        }
+                    }
+                    colorerCase(xActual,yActual,from_to);
                 }
                 $("#flag_begin").removeClass("b-blue");
+                
+                //set befores
+                xBefore = xActual;
+                yBefore = yActual;
+                
+                //set actuals
+                xActual = xAfter;
+                yActual = yAfter;
             }
-            function colorerCase(xD,yD){
+            function colorerCase(xD,yD,from_to){
                 let td = trouverCase(yD,xD);
                 td.addClass("b-blue");
-                td.html("<div class='line bottom_left'> </div>");
+                td.html("<div class='line "+from_to+"'> </div>");
                 
             }
 

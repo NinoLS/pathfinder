@@ -35,8 +35,8 @@ class Plateau{
                 echo "<tr>";
                 for ($j=0; $j < $this->y; $j++) { 
                     echo "
-                    <td>
-                        <img src='' class='put_flag'>
+                    <td x='$i' y='$j' x_y='{$i}_{$j}'>
+                        <img src=''>
                     </td>
                     ";
                 }

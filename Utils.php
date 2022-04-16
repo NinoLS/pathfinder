@@ -20,6 +20,7 @@ class Utils{
 
             .line{
                 border-style: solid;
+                animation: 2s border infinite;
             }
             .bottom_left{
                 margin:45% 0 0 0;
@@ -59,6 +60,27 @@ class Utils{
             }
             .w-50{
                 width:50%;
+            }
+
+            @keyframes border {
+            38% {
+                color: #ffdb00;
+            }
+            50% {
+                color: #ffdb00;
+            }
+            62% {
+                color: #ffdb00;
+            }
+            75% {
+                color: #ffdb00;
+            }
+            88% {
+                color: #ffdb00;
+            }
+            100% {
+                color: #ffdb00;
+            }
             }
         </style>
 
@@ -387,7 +409,7 @@ class Utils{
             function colorerCase(xD,yD,from_to){
                 let td = trouverCase(yD,xD);
                 td.addClass("b-blue");
-                td.html("<div class='line "+from_to+"'> </div>");
+                td.html("<div class='line "+from_to+"'></div>");
                 
             }
 

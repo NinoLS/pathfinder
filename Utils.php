@@ -1,8 +1,8 @@
 <?php
 
 class Utils{
-    public static $X_DEFAULT = 8;
-    public static $Y_DEFAULT = 8;
+    public static $X_DEFAULT = 15;
+    public static $Y_DEFAULT = 15;
     public static $TD_WIDTH_PX = 45;
     public static $TD_HEIGHT_PX = 45;
 
@@ -10,7 +10,7 @@ class Utils{
         ?>
         <style>
             *{ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size:16.8px;}
-            td { border: 1px solid black; }
+            td { border: 0.4px solid black; }
             td { width:<?=self::$TD_WIDTH_PX?>px; height:<?=self::$TD_HEIGHT_PX?>px; }
             td input[type=number] { width: 75%; margin-bottom:10%;}
             .b-red{border: 3px solid red;}
@@ -114,7 +114,7 @@ class Utils{
                 $(".A_cbx").change(function(){
                     if($(this).is(":checked")){
                         $(".A_cbx").attr("disabled", "");
-                        $(this).parent().find(".w-small").addClass("b-blue");
+                        // $(this).parent().find(".w-small").addClass("b-blue");
                         $(this).removeAttr("disabled");
                     } else {
                         $(".A_cbx").removeAttr("disabled");
@@ -369,7 +369,6 @@ class Utils{
                                 from_to="top_right";
                             //case actuelle A DROITE case prochaine
                             } else if(xActual > xAfter){
-                                alert("2e");
                                 from_to="top_left";
                             } else {
                                 from_to="bottom_top";
@@ -408,8 +407,8 @@ class Utils{
             }
             function colorerCase(xD,yD,from_to){
                 let td = trouverCase(yD,xD);
-                td.addClass("b-blue");
-                td.html("<div class='line "+from_to+"'></div>");
+                // td.addClass("b-blue");
+                td.html("<div class='line "+from_to+"'> </div>");
                 
             }
 

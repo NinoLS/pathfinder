@@ -239,8 +239,8 @@ class Utils{
                     calculerCoutsVoisins();
                 } while (action > 0);
                 
-                console.log(couts);
-                console.log(chemin);
+                // console.log(couts);
+                // console.log(chemin);
                 colorerLesCases(chemin);
             }
 
@@ -258,7 +258,7 @@ class Utils{
             }
 
             function calculerCoutsVoisins(){
-                console.log("-");
+                // console.log("-");
                 for (let i = 0; i < Object.keys(couts_init).length; i++) {
                     for (let j = 0; j < Object.keys(couts_init[i]).length; j++) {
                         if(typeof couts[i] != "undefined" && typeof couts[i][j] != "undefined"){
@@ -294,66 +294,95 @@ class Utils{
                 var xBefore = xB;
                 var yBefore = yB;
                 
-                var idTmp = chemin[xBefore+"_"+xBefore].split("_");
+                var idTmp = chemin[xBefore+"_"+yBefore].split("_");
                 var xActual = idTmp[0];
                 var yActual = idTmp[1];
                 
-                var xAfter = "";
-                var yAfter = "";
+                idTmp = chemin[xActual+"_"+yActual].split("_");
+                var xAfter = idTmp[0];
+                var yAfter = idTmp[1];
 
                 //classe
                 let from_to = ""; 
                 while(xBefore != xA || yBefore != yA){
+                    console.log("before: ("+xBefore+","+yBefore+")");
+                    console.log("actual: ("+xActual+","+yActual+")");
+                    console.log("after: ("+xAfter+","+yAfter+")");
+                    console.log("-");
+
+                    //case précédente à GAUCHE case actuelle
+                    if(xBefore < xActual){
+                        //case actuelle à GAUCHE case prochaine
+                        if(xActual < xAfter){
+                            from_to = "left_right";
+                        //case actuelle EN DESSOUS case prochaine
+                        } else if(yActual < yAfter) {
+                            from_to="bottom_left";
+                        //case actuelle AU DESSUS case prochaine
+                        } else if(yActual > yAfter){
+                            from_to="top_left";
+                        } //else IMPOSSIBLE
+                    }
+                    //case précédente à DROITE case actuelle
+                    else if(xBefore > xActual){
+                        //case actuelle à DROITE case prochaine
+                        if(xActual > xAfter){
+                            from_to = "left_right";
+                        //case actuelle EN DESSOUS case prochaine
+                        } else if(yActual < yAfter) {
+                            from_to="bottom_right";
+                        //case actuelle AU DESSUS case prochaine
+                        } else if(yActual > yAfter){
+                            from_to="top_right";
+                        } //else IMPOSSIBLE
+
+                    }
+
+                    //case précédente meme COLONNE case actuelle
+                    else {
+                        //case précédente en DESSOUS case actuelle
+                        if(yBefore < yActual){
+                            //case actuelle A GAUCHE case prochaine
+                            if(xActual < xAfter) {
+                                from_to="top_right";
+                            //case actuelle A DROITE case prochaine
+                            } else if(xActual > xAfter){
+                                alert("2e");
+                                from_to="top_left";
+                            } else {
+                                from_to="bottom_top";
+                            }
+                        //case précédente au DESSUS case 
+                        } else if(yBefore > yActual) {
+                            //case actuelle A GAUCHE case prochaine
+                            if(xActual < xAfter) {
+                                from_to="bottom_right";
+                            //case actuelle A DROITE case prochaine
+                            } else if(xActual > xAfter){
+                                from_to="bottom_left";
+                            } else {
+                                from_to="bottom_top";
+                            }
+                        } //else impossible
+                    }
+
+                    
+                    colorerCase(xActual,yActual,from_to);
+                    //set befores
+                    xBefore = xActual;
+                    yBefore = yActual;
+                    
+                    //set actuals
+                    xActual = xAfter;
+                    yActual = yAfter;
+                    
                     //set afters
-                    idTmp = chemin[xActual+"_"+yActual].split("_");
+                    idTmp = chemin[xAfter+"_"+yAfter].split("_");
                     xAfter = idTmp[0];
                     yAfter = idTmp[1];
-
-                    //si case précédente à gauche de la case actuelle
-                    if(xBefore < xActual){
-                        //si case d'après au-dessus de la case actuelle
-                        if(yActual < yAfter){
-                            from_to = "top_left";
-                        } else {
-                            //si case d'après en-dessous de la case actuelle
-                            if(yActual > yAfter){
-                                from_to = "bottom_left";
-                            } else { //case au meme niveau
-                                    console.log(xBefore + " _ " + yBefore);
-                                    console.log(xActual + " _ " + yActual);
-                                    console.log(xAfter + " _ " + yAfter);
-                                from_to = "left_right";
-                            }
-                        }
-                    } else {
-                        //si la case précédente à droite de la case actuelle
-                        if(xBefore > xActual){
-                            //si case d'après au-dessus de la case actuelle
-                            if(yActual < yAfter){
-                                from_to = "top_right";
-                            } else {
-                                //si case d'après en-dessous de la case actuelle
-                                if(yActual > yAfter){
-                                    from_to = "bottom_right";
-                                } else { //case au meme niveau
-                                    from_to = "left_right";
-                                }
-                            }
-                        } else { 
-                            from_to = "bottom_top";
-                        }
-                    }
-                    colorerCase(xActual,yActual,from_to);
                 }
                 $("#flag_begin").removeClass("b-blue");
-                
-                //set befores
-                xBefore = xActual;
-                yBefore = yActual;
-                
-                //set actuals
-                xActual = xAfter;
-                yActual = yAfter;
+
             }
             function colorerCase(xD,yD,from_to){
                 let td = trouverCase(yD,xD);

@@ -306,17 +306,17 @@ class Utils{
                 for (let i = 0; i < Object.keys(couts_init).length; i++) {
                     for (let j = 0; j < Object.keys(couts_init[i]).length; j++) {
                         if(typeof couts[i] != "undefined" && typeof couts[i][j] != "undefined"){
-                            if(!trouverCase(j,i).hasClass("wall")){
-                                if(!trouverCase(j-1,i).hasClass("wall")){
+                            if(!trouverCase(i,j).hasClass("wall")){
+                                if(!trouverCase(i, j-1).hasClass("wall")){
                                     calculerCaseVersCase(i,j,i  ,j-1);
                                 }
-                                if(!trouverCase(j+1,i).hasClass("wall")){
+                                if(!trouverCase(i,j+1).hasClass("wall")){
                                     calculerCaseVersCase(i,j,i  ,j+1);
                                 }
-                                if(!trouverCase(j,i-1).hasClass("wall")){
+                                if(!trouverCase(i-1,j).hasClass("wall")){
                                     calculerCaseVersCase(i,j,i-1,j  );
                                 }
-                                if(!trouverCase(j,i+1).hasClass("wall")){
+                                if(!trouverCase(i+1,j).hasClass("wall")){
                                     calculerCaseVersCase(i,j,i+1,j  );
                                 }
                             }
@@ -384,7 +384,7 @@ class Utils{
                             from_to = "left_right";
                         //case actuelle EN DESSOUS case prochaine
                         } else if(yActual < yAfter) {
-                            from_to="bottom_right";alert(1)
+                            from_to="bottom_right";
                         //case actuelle AU DESSUS case prochaine
                         } else if(yActual > yAfter){
                             from_to="top_right";
@@ -408,7 +408,7 @@ class Utils{
                         //case précédente au DESSUS case 
                         } else if(yBefore > yActual) {
                             //case actuelle A GAUCHE case prochaine
-                            if(xActual < xAfter) {alert(2);
+                            if(xActual < xAfter) {
                                 from_to="bottom_right";
                             //case actuelle A DROITE case prochaine
                             } else if(xActual > xAfter){

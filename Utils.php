@@ -113,6 +113,8 @@ class Utils{
             var xB;
             var yB;
 
+            var count = 1;
+
             const PUT_FLAG_BEGIN = 0;
             const PUT_FLAG_END = 1;
             const PUT_COSTS = 2;
@@ -345,6 +347,7 @@ class Utils{
             }
 
             function colorerLesCases(chemins){
+
                 var xBefore = parseInt(xB);
                 var yBefore = parseInt(yB);
                 
@@ -440,8 +443,11 @@ class Utils{
             function colorerCase(xD,yD,from_to){
                 let td = trouverCase(yD,xD);
                 // td.addClass("b-blue");
-                td.html("<div class='line "+from_to+"'> </div>");
+                td.html("<div class='line "+from_to+"' style='display:none;'> </div>");
                 
+                //animation
+                td.find("div").fadeIn(count*100);
+                count+=2;
             }
 
             function lancerBlock(){

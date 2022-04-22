@@ -40,12 +40,12 @@ class Utils{
                 border-width: 0px 2px 2px 0; 
             }
             .top_right{
-                margin:0% 0 45% 45%;
+                margin:0% 0 43% 49%;
                 width:50%;
                 border-width: 0px 0px 2px 2px; 
             }
             .bottom_right{
-                margin:45% 0 0 45%;
+                margin:45% 0 0 49%;
                 width:50%;
                 border-width: 2px 0px 0px 2px; 
             }

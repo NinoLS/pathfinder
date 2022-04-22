@@ -10,9 +10,16 @@ class Utils{
         ?>
         <style>
             *{ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size:16.8px;}
+            
+            /*td*/
             td { border: 0.4px solid black; }
             td { width:<?=self::$TD_WIDTH_PX?>px; height:<?=self::$TD_HEIGHT_PX?>px; }
             td input[type=number] { width: 75%; margin-bottom:10%;}
+            .td-grey{
+                opacity: 0.4;
+            }
+
+            /* */
             .b-red{border: 3px solid red;}
             .b-blue{ 
                 border: 2px solid blue;
@@ -60,6 +67,11 @@ class Utils{
             }
             .w-50{
                 width:50%;
+            }
+
+            /*btn*/
+            .btn-selected{
+                background-color: grey;
             }
 
             @keyframes border {
@@ -176,6 +188,9 @@ class Utils{
                         break;
                     
                     case PUT_COSTS:
+                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
+                            td.attr("style", "background-color:black;");
+                        }
                         break;
                 }
             }
@@ -200,10 +215,14 @@ class Utils{
                                 .attr("style", "opacity:1;")
                                 .parent().attr("id", "flag_end");
                             incrementStep();
+                            $("#btn_block").removeAttr("disabled");
                         }
                         break;
                     
                     case PUT_COSTS:
+                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
+                            td.addClass("wall");
+                        }
                         break;
                 }
 
@@ -227,6 +246,9 @@ class Utils{
                         break;
                     
                     case PUT_COSTS:
+                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
+                            td.removeAttr("style");
+                        }
                         break;
                 }
                 
@@ -284,10 +306,20 @@ class Utils{
                 for (let i = 0; i < Object.keys(couts_init).length; i++) {
                     for (let j = 0; j < Object.keys(couts_init[i]).length; j++) {
                         if(typeof couts[i] != "undefined" && typeof couts[i][j] != "undefined"){
-                            calculerCaseVersCase(i,j,i  ,j-1);
-                            calculerCaseVersCase(i,j,i  ,j+1);
-                            calculerCaseVersCase(i,j,i-1,j  );
-                            calculerCaseVersCase(i,j,i+1,j  );
+                            if(!trouverCase(j,i).hasClass("wall")){
+                                if(!trouverCase(j-1,i).hasClass("wall")){
+                                    calculerCaseVersCase(i,j,i  ,j-1);
+                                }
+                                if(!trouverCase(j+1,i).hasClass("wall")){
+                                    calculerCaseVersCase(i,j,i  ,j+1);
+                                }
+                                if(!trouverCase(j,i-1).hasClass("wall")){
+                                    calculerCaseVersCase(i,j,i-1,j  );
+                                }
+                                if(!trouverCase(j,i+1).hasClass("wall")){
+                                    calculerCaseVersCase(i,j,i+1,j  );
+                                }
+                            }
                             
                         }
                         //diagonales
@@ -313,16 +345,16 @@ class Utils{
             }
 
             function colorerLesCases(chemins){
-                var xBefore = xB;
-                var yBefore = yB;
+                var xBefore = parseInt(xB);
+                var yBefore = parseInt(yB);
                 
                 var idTmp = chemin[xBefore+"_"+yBefore].split("_");
-                var xActual = idTmp[0];
-                var yActual = idTmp[1];
+                var xActual = parseInt(idTmp[0]);
+                var yActual = parseInt(idTmp[1]);
                 
                 idTmp = chemin[xActual+"_"+yActual].split("_");
-                var xAfter = idTmp[0];
-                var yAfter = idTmp[1];
+                var xAfter = parseInt(idTmp[0]);
+                var yAfter = parseInt(idTmp[1]);
 
                 //classe
                 let from_to = ""; 
@@ -352,7 +384,7 @@ class Utils{
                             from_to = "left_right";
                         //case actuelle EN DESSOUS case prochaine
                         } else if(yActual < yAfter) {
-                            from_to="bottom_right";
+                            from_to="bottom_right";alert(1)
                         //case actuelle AU DESSUS case prochaine
                         } else if(yActual > yAfter){
                             from_to="top_right";
@@ -376,7 +408,7 @@ class Utils{
                         //case précédente au DESSUS case 
                         } else if(yBefore > yActual) {
                             //case actuelle A GAUCHE case prochaine
-                            if(xActual < xAfter) {
+                            if(xActual < xAfter) {alert(2);
                                 from_to="bottom_right";
                             //case actuelle A DROITE case prochaine
                             } else if(xActual > xAfter){
@@ -399,8 +431,8 @@ class Utils{
                     
                     //set afters
                     idTmp = chemin[xAfter+"_"+yAfter].split("_");
-                    xAfter = idTmp[0];
-                    yAfter = idTmp[1];
+                    xAfter = parseInt(idTmp[0]);
+                    yAfter = parseInt(idTmp[1]);
                 }
                 $("#flag_begin").removeClass("b-blue");
 
@@ -412,6 +444,13 @@ class Utils{
                 
             }
 
+            function lancerBlock(){
+                $(this).addClass("btn-selected");
+                $("td").addClass("td-grey");
+
+            }
+
+
             
         </script>
         <?php
@@ -420,6 +459,7 @@ class Utils{
     public static function chargerReglages(){
         ?>
         <input type="button" value="Lancer" onclick="lancerAlgo()">
+        <input type="button" value="Block" onclick="lancerBlock()" id="btn_block" disabled>
         <input type="hidden" value="0" id="step">
         <?php
     }

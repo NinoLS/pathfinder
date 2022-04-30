@@ -37,6 +37,7 @@ class Plateau{
                     echo "
                     <td x='$i' y='$j' x_y='{$i}_{$j}'>
                         <img src=''>
+                        <input class='hidden' type='text' value='1' disabled>
                     </td>
                     ";
                 }

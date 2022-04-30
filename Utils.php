@@ -68,7 +68,7 @@ class Utils{
 
                 });
 
-                //depart
+                //placer flag & couts
                 $("td").on({
                     mouseenter: function() {
                         caseMouseEnter($(this));
@@ -80,6 +80,14 @@ class Utils{
                         caseMouseLeave($(this));
                     }
                 });
+
+                //initialiser couts
+                for (let i = 0; i < X_DEFAULT; i++) {
+                    couts_init[i] = new Object();
+                    for (let j = 0; j < Y_DEFAULT; j++) {
+                        couts_init[i][j] = 1;
+                    }
+                }
             });
 
             function getStep(){
@@ -111,7 +119,8 @@ class Utils{
                     
                     case PUT_COSTS:
                         if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
-                            td.attr("style", "background-color:black;");
+                            let input = td.find("input");
+                            td.find("input").removeClass("hidden");
                         }
                         break;
                 }
@@ -143,7 +152,9 @@ class Utils{
                     
                     case PUT_COSTS:
                         if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
-                            td.addClass("wall");
+                            let input = td.find("input");
+                            input.val(parseInt(input.val())+1);
+                            couts_init[td.attr("x")][td.attr("y")]++;
                         }
                         break;
                 }
@@ -169,7 +180,10 @@ class Utils{
                     
                     case PUT_COSTS:
                         if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
-                            td.removeAttr("style");
+                            let input = td.find("input");
+                            if(parseInt(input.val()) == 1){
+                                input.addClass("hidden");
+                            }
                         }
                         break;
                 }
@@ -191,13 +205,6 @@ class Utils{
                 //couts
                 couts[xA] = new Object();
                 couts[xA][yA] = 0;
-
-                for (let i = 0; i < X_DEFAULT; i++) {
-                    couts_init[i] = new Object();
-                    for (let j = 0; j < <?=Utils::$Y_DEFAULT?>; j++) {
-                        couts_init[i][j] = trouverCase(i,j).val();
-                    }
-                }
 
                 do {
                     //trouver voisin

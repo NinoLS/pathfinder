@@ -86,3 +86,20 @@ td input[type=number] { width: 75%; margin-bottom:10%;}
         color: var(--yellow-orange);
     }
 }
+
+/* controller */
+td input{
+    position:relative;
+    width:100%;
+    text-align:center;
+    font-weight:bold;
+    border:0;
+}
+.d-flex{
+}
+.controller{
+}
+
+.hidden{
+    display:none;
+}

@@ -1,0 +1,88 @@
+/* variables */
+:root{
+    --td_width: 45px;
+    --td_height: 45px;
+}
+
+/* style */
+*{
+    font-family: "montserrat";
+    font-size:12px;
+}   
+
+/*td*/
+td { border: 0.4px solid black; }
+td { 
+    width: var(--td_width);
+    height: var(--td_height);
+}
+td input[type=number] { width: 75%; margin-bottom:10%;}
+.td-grey{
+    opacity: 0.4;
+}
+
+/* */
+.b-red{border: 3px solid red;}
+.b-blue{ 
+    border: 2px solid blue;
+}
+
+.line{
+    height: 50%;
+    border-style: solid;
+    animation: 2s border infinite;
+}
+.bottom_left{
+    margin:45% 0 0 0;
+    width:50%;
+    border-width: 2px 2px 0px 0; 
+}
+.top_left{
+    margin:0 0 45% 0;
+    width:50%;
+    border-width: 0px 2px 2px 0; 
+}
+.top_right{
+    margin:0% 0 43% 49%;
+    width:50%;
+    border-width: 0px 0px 2px 2px; 
+}
+.bottom_right{
+    margin:45% 0 0 49%;
+    width:50%;
+    border-width: 2px 0px 0px 2px; 
+}
+.left_right{
+    margin:45% 0 0 0;
+    width:100%;
+    border-width: 2px 0px 0px 0px; 
+}
+.bottom_top{
+    margin:0 45% 0 0;
+    width:50%;
+    height:100%;
+    border-width: 0px 2px 0px 0px; 
+}
+
+/*width*/
+.w-100{
+    width:100%;
+}
+.w-50{
+    width:50%;
+}
+
+/*btn*/
+.btn-selected{
+    background-color: grey;
+}
+
+.wall{
+    background-color: black;
+}
+
+@keyframes border {
+    38% {
+        color: var(--yellow-orange);
+    }
+}

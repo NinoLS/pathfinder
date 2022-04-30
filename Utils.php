@@ -1,101 +1,15 @@
 <?php
 
 class Utils{
-    public static $X_DEFAULT = 15;
-    public static $Y_DEFAULT = 15;
+    public static $X_DEFAULT = 10;
+    public static $Y_DEFAULT = 20;
     public static $TD_WIDTH_PX = 45;
     public static $TD_HEIGHT_PX = 45;
 
     public static function chargerStyle(){
         ?>
-        <style>
-            *{ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size:16.8px;}
-            
-            /*td*/
-            td { border: 0.4px solid black; }
-            td { width:<?=self::$TD_WIDTH_PX?>px; height:<?=self::$TD_HEIGHT_PX?>px; }
-            td input[type=number] { width: 75%; margin-bottom:10%;}
-            .td-grey{
-                opacity: 0.4;
-            }
-
-            /* */
-            .b-red{border: 3px solid red;}
-            .b-blue{ 
-                border: 2px solid blue;
-            }
-
-            .line{
-                border-style: solid;
-                animation: 2s border infinite;
-            }
-            .bottom_left{
-                margin:45% 0 0 0;
-                width:50%;
-                border-width: 2px 2px 0px 0; 
-            }
-            .top_left{
-                margin:0 0 45% 0;
-                width:50%;
-                border-width: 0px 2px 2px 0; 
-            }
-            .top_right{
-                margin:0% 0 43% 49%;
-                width:50%;
-                border-width: 0px 0px 2px 2px; 
-            }
-            .bottom_right{
-                margin:45% 0 0 49%;
-                width:50%;
-                border-width: 2px 0px 0px 2px; 
-            }
-            .left_right{
-                margin:45% 0 0 0;
-                width:100%;
-                border-width: 2px 0px 0px 0px; 
-            }
-            .bottom_top{
-                margin:0 45% 0 0;
-                width:50%;
-                height:100%;
-                border-width: 0px 2px 0px 0px; 
-            }
-
-            /*width*/
-            .w-100{
-                width:100%;
-            }
-            .w-50{
-                width:50%;
-            }
-
-            /*btn*/
-            .btn-selected{
-                background-color: grey;
-            }
-
-            @keyframes border {
-            38% {
-                color: #ffdb00;
-            }
-            50% {
-                color: #ffdb00;
-            }
-            62% {
-                color: #ffdb00;
-            }
-            75% {
-                color: #ffdb00;
-            }
-            88% {
-                color: #ffdb00;
-            }
-            100% {
-                color: #ffdb00;
-            }
-            }
-        </style>
-
+        <link rel="stylesheet" href="./css/style_other.css">
+        <link rel="stylesheet" href="./css/style.css">
         <?php
     }
 
@@ -119,11 +33,17 @@ class Utils{
             const PUT_FLAG_END = 1;
             const PUT_COSTS = 2;
 
+            var X_DEFAULT; 
+            var Y_DEFAULT; 
+
             $(document).ready(function(){
                 couts = new Object();
                 couts_init = new Object();
                 chemin = new Object();
                 action = 0;
+
+                X_DEFAULT = $("#X_DEFAULT").val();
+                Y_DEFAULT = $("#Y_DEFAULT").val();
 
                 $(".A_cbx").change(function(){
                     if($(this).is(":checked")){
@@ -272,7 +192,7 @@ class Utils{
                 couts[xA] = new Object();
                 couts[xA][yA] = 0;
 
-                for (let i = 0; i < <?=Utils::$X_DEFAULT?>; i++) {
+                for (let i = 0; i < X_DEFAULT; i++) {
                     couts_init[i] = new Object();
                     for (let j = 0; j < <?=Utils::$Y_DEFAULT?>; j++) {
                         couts_init[i][j] = trouverCase(i,j).val();
@@ -290,13 +210,39 @@ class Utils{
                 colorerLesCases(chemin);
             }
 
+            function lancerAleatoire(){
+                //retirer les murs partout
+                $(".wall").removeClass("wall");
+
+                //compteur
+                let n = 0;
+                let n_max = randomBetween(X_DEFAULT*Y_DEFAULT/6, X_DEFAULT*Y_DEFAULT/4);
+
+                //case aléatoire
+                while(n <= n_max){
+                    trouverCase(
+                        randomBetween(0, X_DEFAULT),
+                        randomBetween(0, Y_DEFAULT)
+                    ).addClass("wall");
+                    n++;
+                }
+
+                //pas sur cases départ & arrivé
+                $("#flag_begin").removeClass("wall");
+                $("#flag_end").removeClass("wall");
+            }
+
+            function randomBetween(min, max){
+                return Math.floor(Math.random() * max) + min;
+            }
+
             function caseExiste(x,y){
                 x = parseInt(x);
                 y = parseInt(y);
                 return (
-                    x >= 0 && x < <?= Utils::$X_DEFAULT ?>
+                    x >= 0 && x < X_DEFAULT
                     &&
-                    y >= 0 && y < <?= Utils::$Y_DEFAULT ?>);
+                    y >= 0 && y < Y_DEFAULT);
             }
 
             function trouverCase(x,y){
@@ -446,7 +392,7 @@ class Utils{
                 td.html("<div class='line "+from_to+"' style='display:none;'> </div>");
                 
                 //animation
-                td.find("div").fadeIn(count*100);
+                td.find("div").delay(count*30).fadeIn(100);
                 count+=2;
             }
 
@@ -463,12 +409,26 @@ class Utils{
     }
 
     public static function chargerReglages(){
+        echo self::createButton("lancer","button",null,"lancerAlgo()"); 
+        echo self::createButton("barrage","button","btn_block","lancerBlock()"); 
+        echo self::createButton("aleatoire","button",null,"lancerAleatoire()"); 
         ?>
-        <input type="button" value="Lancer" onclick="lancerAlgo()">
-        <input type="button" value="Block" onclick="lancerBlock()" id="btn_block" disabled>
         <input type="hidden" value="0" id="step">
+        <input type="hidden" value="<?=self::$X_DEFAULT?>" id="X_DEFAULT">
+        <input type="hidden" value="<?=self::$Y_DEFAULT?>" id="Y_DEFAULT">
         <?php
     }
+
+    public static function createButton($text,$type,$id = null,$onClick = null){
+        return '<button type="'.$type.'" class="btn" id="'.$id.'" onclick="'.$onClick.'">
+                  <div class="b-left"></div>
+                  <div class="b-top"></div>
+                  <span>'.$text.'</span>
+                  <div class="b-right"></div>
+                  <div class="b-bottom"></div>
+                </button>';
+    }
+    
 }
 
 ?>

@@ -77,7 +77,7 @@ td input[type=number] { width: 75%; margin-bottom:10%;}
     background-color: grey;
 }
 
-.wall{
+.wall, .wall-h{
     background-color: black;
 }
 

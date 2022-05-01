@@ -138,7 +138,7 @@ class Utils{
                         break;
                     case PUT_WALLS:
                         if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
-                            td.addClass("wall");
+                            td.addClass("wall-h");
                         }
                         break;
                 }
@@ -180,7 +180,7 @@ class Utils{
                         }
                         break;
                     case PUT_WALLS:
-                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
+                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end"){
                             td.addClass("wall");
                         }
                         break;
@@ -214,12 +214,12 @@ class Utils{
                         }
                         break;
                     case PUT_WALLS:
-                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
-                            td.removeClass("wall");
+                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end"){
+                            td.removeClass("wall-h");
                         }
                         break;
                 }
-                
+                    
             }
 
             function appliquerPoids(){

@@ -32,6 +32,7 @@ class Utils{
             const PUT_FLAG_BEGIN = 0;
             const PUT_FLAG_END = 1;
             const PUT_COSTS = 2;
+            const PUT_WALLS = 3;
 
             var X_DEFAULT; 
             var Y_DEFAULT; 
@@ -88,13 +89,25 @@ class Utils{
                         couts_init[i][j] = 1;
                     }
                 }
+
+                //desactiver tout
+                desactiverBouton("btn_lancer")
+                desactiverBouton("btn_barrage")
+                desactiverBouton("btn_aleatoire")
             });
 
             function getStep(){
                 return parseInt($("#step").val());
             }
-            function incrementStep(){
-                $("#step").val(parseInt($("#step").val())+1);
+            function incrementStep(value = null){
+                if(value !== null){
+                    $("#step").val(value);
+                } else {
+                    $("#step").val(parseInt($("#step").val())+1);
+                }
+            }
+            function decrementStep(){
+                $("#step").val(parseInt($("#step").val())-1);
             }
 
             function caseMouseEnter(td){
@@ -123,6 +136,11 @@ class Utils{
                             td.find("input").removeClass("hidden");
                         }
                         break;
+                    case PUT_WALLS:
+                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
+                            td.addClass("wall");
+                        }
+                        break;
                 }
             }
             function caseMouseClick(td){
@@ -146,7 +164,11 @@ class Utils{
                                 .attr("style", "opacity:1;")
                                 .parent().attr("id", "flag_end");
                             incrementStep();
-                            $("#btn_block").removeAttr("disabled");
+                            
+                            //activer lancer, barrage, aleatoire
+                            activerBouton("btn_lancer")
+                            activerBouton("btn_barrage");
+                            activerBouton("btn_aleatoire")
                         }
                         break;
                     
@@ -155,6 +177,11 @@ class Utils{
                             let input = td.find("input");
                             input.val(parseInt(input.val())+1);
                             couts_init[td.attr("x")][td.attr("y")]++;
+                        }
+                        break;
+                    case PUT_WALLS:
+                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
+                            td.addClass("wall");
                         }
                         break;
                 }
@@ -186,6 +213,11 @@ class Utils{
                             }
                         }
                         break;
+                    case PUT_WALLS:
+                        if(td.attr("id") !== "flag_begin" && td.attr("id") !== "flag_end" && !td.hasClass("wall")){
+                            td.removeClass("wall");
+                        }
+                        break;
                 }
                 
             }
@@ -206,15 +238,36 @@ class Utils{
                 couts[xA] = new Object();
                 couts[xA][yA] = 0;
 
+                //couts voisin
                 do {
-                    //trouver voisin
                     action = 0;
                     calculerCoutsVoisins();
                 } while (action > 0);
-                
-                // console.log(couts);
-                // console.log(chemin);
+
+                //desactiver les boutons 
+                desactiverBouton("btn_barrage");
+                desactiverBouton("btn_aleatoire");
+
+                //lancer -> relancer
+                $("#btn_lancer")
+                    .find("span").html("relancer")
+                    .click(function(){
+                        location.reload();
+                    });
+
+                //colorer
                 colorerLesCases(chemin);
+            }
+
+            function desactiverBouton(id){
+                $("#" + id)
+                    .addClass("btn-disabled")
+                    .attr("disabled","");
+            }
+            function activerBouton(id){
+                $("#" + id)
+                    .removeClass("btn-disabled")
+                    .removeAttr("disabled");
             }
 
             function lancerAleatoire(){
@@ -403,10 +456,36 @@ class Utils{
                 count+=2;
             }
 
-            function lancerBlock(){
-                $(this).addClass("btn-selected");
+            function lancerBarrage(){
+                //étape
+                incrementStep(PUT_WALLS);
+
+                //case en gris
                 $("td").addClass("td-grey");
 
+                //bouton selected
+                $("#btn_barrage").addClass("hidden");
+                $("#btn_terminer").removeClass("hidden");
+                
+                //desactiver autres btns
+                desactiverBouton("btn_lancer");
+                desactiverBouton("btn_aleatoire");
+            }
+
+            function arreterBarrage(){
+                //étape
+                incrementStep(PUT_COSTS);
+
+                //case en gris
+                $("td").removeClass("td-grey");
+
+                //bouton selected
+                $("#btn_barrage").removeClass("hidden");
+                $("#btn_terminer").addClass("hidden");
+                
+                //desactiver autres btns
+                activerBouton("btn_lancer");
+                activerBouton("btn_aleatoire");
             }
 
 
@@ -416,9 +495,10 @@ class Utils{
     }
 
     public static function chargerReglages(){
-        echo self::createButton("lancer","button",null,"lancerAlgo()"); 
-        echo self::createButton("barrage","button","btn_block","lancerBlock()"); 
-        echo self::createButton("aleatoire","button",null,"lancerAleatoire()"); 
+        echo self::createButton("lancer","button","btn_lancer","lancerAlgo()", "btn-disabled", "disabled"); 
+        echo self::createButton("barrage","button","btn_barrage","lancerBarrage()", "btn-disabled", "disabled"); 
+        echo self::createButton("terminé","button","btn_terminer","arreterBarrage()", "hidden"); 
+        echo self::createButton("aleatoire","button","btn_aleatoire","lancerAleatoire()", "btn-disabled", "disabled"); 
         ?>
         <input type="hidden" value="0" id="step">
         <input type="hidden" value="<?=self::$X_DEFAULT?>" id="X_DEFAULT">
@@ -426,8 +506,8 @@ class Utils{
         <?php
     }
 
-    public static function createButton($text,$type,$id = null,$onClick = null){
-        return '<button type="'.$type.'" class="btn" id="'.$id.'" onclick="'.$onClick.'">
+    public static function createButton($text,$type,$id = null,$onClick = null, $more_classes = "", $more_attrs = ""){
+        return '<button type="'.$type.'" class="btn '.$more_classes.'" id="'.$id.'" onclick="'.$onClick.'" '.$more_attrs.'>
                   <div class="b-left"></div>
                   <div class="b-top"></div>
                   <span>'.$text.'</span>

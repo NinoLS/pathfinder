@@ -28,38 +28,101 @@ $(document).ready(function(){
     desactiverBouton("btn_barrage");
     desactiverBouton("btn_aleatoire");
 
-    //1 - Initialiser donnees
-    couts = new Object();
-    couts_init = new Object();
-    chemin = new Object();
-    action = 0;
-
-    X_DEFAULT = $("#X_DEFAULT").val();
-    Y_DEFAULT = $("#Y_DEFAULT").val();
-    TD_WIDTH = $("#TD_WIDTH").val();
-    TD_HEIGHT = $("#TD_HEIGHT").val();
-
-    //2 - Initialiser couts
-    for (let i = 0; i < X_DEFAULT; i++) {
-        couts_init[i] = new Object();
-        for (let j = 0; j < Y_DEFAULT; j++) {
-            couts_init[i][j] = 1;
+    //swal configuration
+    Swal.fire({
+        title: 'Configuration',
+        html: `
+            <input type="number" id="x" class="swal2-input" placeholder="Colonnes">
+            <input type="number" id="y" class="swal2-input" placeholder="Lignes">
+            `,
+        confirmButtonText: 'Valider',
+        focusConfirm: false,
+        preConfirm: () => {
+          const x = Swal.getPopup().querySelector('#x').value
+          const y = Swal.getPopup().querySelector('#y').value
+          if (!x || !y) {
+            Swal.showValidationMessage(`Saisissez toutes les données`)
+          } else {
+            if(x < 2 || y < 2){
+                Swal.showValidationMessage(`Taille minimum: 2x2`)
+            }
+          }
+          return { x: x, y: y }
         }
-    }
+      }).then((result) => {
+        $("#X_DEFAULT").val(result.value.x);
+        $("#Y_DEFAULT").val(result.value.y);
+        
+        //1
+        dessinerTableau();
 
-    //3 - Placer flag & couts
-    $("td").on({
-        mouseenter: function() {
-            caseMouseEnter($(this));
-        },
-        click: function(){
-            caseMouseClick($(this));
-        },
-        mouseleave: function() {
-            caseMouseLeave($(this));
+        //2 - Initialiser donnees
+        couts = new Object();
+        couts_init = new Object();
+        chemin = new Object();
+        action = 0;
+
+        X_DEFAULT = $("#X_DEFAULT").val();
+        Y_DEFAULT = $("#Y_DEFAULT").val();
+        TD_WIDTH = $("#TD_WIDTH").val();
+        TD_HEIGHT = $("#TD_HEIGHT").val();
+
+        //3 - Initialiser couts
+        for (let i = 0; i < X_DEFAULT; i++) {
+            couts_init[i] = new Object();
+            for (let j = 0; j < Y_DEFAULT; j++) {
+                couts_init[i][j] = 1;
+            }
         }
-    });
+
+        //4 - Listener flags, couts, murs
+        $("td").on({
+            mouseenter: function() {
+                caseMouseEnter($(this));
+            },
+            click: function(){
+                caseMouseClick($(this));
+            },
+            mouseleave: function() {
+                caseMouseLeave($(this));
+            }
+        });
+      })
+      
 });
+
+// dessiner tableau
+function dessinerTableau(){
+    let table;
+    let x_n = $("#X_DEFAULT").val();
+    let y_n = $("#Y_DEFAULT").val();
+    
+    //THEAD
+    table = "<thead>";
+    for (let i=0; i < x_n; i++) { 
+        table += "<tr>";
+        for (let j=0; j < y_n; j++) { 
+            table += "<th></th>";
+        }
+        table += "</tr>";
+    }
+    table += "</thead>";
+    
+    //TBODY
+    table += "<tbody>";
+    for (let i=0; i < x_n; i++) { 
+        table += "<tr>";
+        for (let j=0; j < y_n; j++) { 
+            table += "<td x='"+i+"' y='"+j+"' x_y='"+i+"_"+j+"'>";
+            table += "<img src=''><input class='hidden' type='text' value='1' disabled>";
+            table += "</td>";
+        }
+        table += "</tr>";
+    }
+    table += "</tbody>";
+
+    $("table").html(table);
+} 
 
 // #region étape
 function getStep(){

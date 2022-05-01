@@ -14,45 +14,12 @@ class Plateau{
     }
 
     public function afficherPlateau(){
-        if($this->cases === []){
-            echo "<form>";
-            echo "<table>";
-            
-            //THEAD
-            echo "<thead>";
-            for ($i=0; $i < $this->x; $i++) { 
-                echo "<tr>";
-                for ($j=0; $j < $this->y; $j++) {
-                    echo "<th></th>";
-                }
-            }
-            echo "</thead>";
-
-
-            //TBODY
-            echo "<tbody>";
-            for ($i=0; $i < $this->x; $i++) { 
-                echo "<tr>";
-                for ($j=0; $j < $this->y; $j++) { 
-                    echo "
-                    <td x='$i' y='$j' x_y='{$i}_{$j}'>
-                        <img src=''>
-                        <input class='hidden' type='text' value='1' disabled>
-                    </td>
-                    ";
-                }
-                echo "</tr>";
-            }
-            echo "</tbody>";
-            echo "</table>";
-            echo "</form>";
-        }
+        echo "<form>";
+        echo "<table>";
+        
+        echo "</table>";
+        echo "</form>";
     }
-    
-    
-
-    
-
 }
 
 ?>

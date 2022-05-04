@@ -11,6 +11,10 @@ var xB,yB;
 //compteur
 var count = 1;
 
+//delai
+const DELAY = 1000 * 5;
+var close_interval;
+
 //ressources
 const PUT_FLAG_BEGIN = 0;
 const PUT_FLAG_END = 1;
@@ -53,7 +57,7 @@ $(document).ready(function(){
         $("#X_DEFAULT").val(result.value.x);
         $("#Y_DEFAULT").val(result.value.y);
         
-        //1
+        //1 - Dessiner plateau
         dessinerTableau();
 
         //2 - Initialiser donnees
@@ -256,6 +260,12 @@ function caseMouseLeave(td){
 
 // #region boutons actions
 function lancerAlgo(){
+    //timer
+    close_interval = setInterval(function() {
+        alert(DELAY / 1000 + " secondes écoulées");
+        location.reload();
+      }, DELAY);
+
     //init
     xA = parseInt($("#flag_begin").attr("x"));
     yA = parseInt($("#flag_begin").attr("y"));
@@ -350,10 +360,7 @@ function activerBouton(id){
         .removeClass("btn-disabled")
         .removeAttr("disabled");
 }
-
-function randomBetween(min, max){
-    return Math.floor(Math.random() * max) + min;
-}
+// #endregion
 
 // #region case
 function caseExiste(x,y){
@@ -388,11 +395,6 @@ function calculerCoutsVoisins(){
                 }
                 
             }
-            //diagonales
-            // calculerCaseVersCase(i,j,i-1,j-1);
-            // calculerCaseVersCase(i,j,i+1,j-1);
-            // calculerCaseVersCase(i,j,i-1,j+1);
-            // calculerCaseVersCase(i,j,i+1,j+1);
         }
     }
 }
@@ -513,3 +515,8 @@ function colorerCase(xD,yD,from_to){
     count+=2;
 }
 // #endregion
+
+function randomBetween(min, max){
+    return Math.floor(Math.random() * max) + min;
+}
+

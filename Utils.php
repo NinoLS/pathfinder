@@ -22,10 +22,13 @@ class Utils{
     }
 
     public static function chargerReglages(){
+        // boutons
         echo self::createButton("lancer","button","btn_lancer","lancerAlgo()", "btn-disabled", "disabled"); 
         echo self::createButton("barrage","button","btn_barrage","lancerBarrage()", "btn-disabled", "disabled"); 
         echo self::createButton("terminé","button","btn_terminer","arreterBarrage()", "hidden"); 
         echo self::createButton("aleatoire","button","btn_aleatoire","lancerAleatoire()", "btn-disabled", "disabled"); 
+        
+        // donnees pour recup js
         ?>
         <input type="hidden" value="0" id="step">
         <input type="hidden" value="<?=self::$X_DEFAULT?>" id="X_DEFAULT">

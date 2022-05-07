@@ -278,7 +278,7 @@ function lancerAlgo(){
 
     //lancer -> relancer
     $("#btn_lancer")
-        .find("span").html("relancer")
+        .find("span").html("recommencer")
         .click(function(){
             location.reload();
         });
@@ -519,8 +519,7 @@ function timeIsOut(){
         Swal.fire({
             icon: 'error',
             title: 'Fin',
-            text: 'Temps maximal de calcul atteint',
-            footer: 'Voici le chemin trouvé pour le moment'
+            text: 'Temps maximal de calcul atteint'
           });
         return true;
     }

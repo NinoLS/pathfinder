@@ -12,8 +12,8 @@ var xB,yB;
 var count = 1;
 
 //delai
-const DELAY = 1000 * 5;
-var close_interval;
+const DELAY_SECONDS = 15;
+var timer;
 
 //ressources
 const PUT_FLAG_BEGIN = 0;
@@ -100,17 +100,6 @@ function dessinerTableau(){
     let table;
     let x_n = $("#X_DEFAULT").val();
     let y_n = $("#Y_DEFAULT").val();
-    
-    //THEAD
-    table = "<thead>";
-    for (let i=0; i < x_n; i++) { 
-        table += "<tr>";
-        for (let j=0; j < y_n; j++) { 
-            table += "<th></th>";
-        }
-        table += "</tr>";
-    }
-    table += "</thead>";
     
     //TBODY
     table += "<tbody>";
@@ -261,16 +250,13 @@ function caseMouseLeave(td){
 // #region boutons actions
 function lancerAlgo(){
     //timer
-    close_interval = setInterval(function() {
-        alert(DELAY / 1000 + " secondes écoulées");
-        location.reload();
-      }, DELAY);
+    timer = Date.now();
 
     //init
-    xA = parseInt($("#flag_begin").attr("x"));
-    yA = parseInt($("#flag_begin").attr("y"));
-    xB = parseInt($("#flag_end").attr("y"));
-    yB = parseInt($("#flag_end").attr("x"));
+    xA = parseInt($("#flag_end").attr("x"));
+    yA = parseInt($("#flag_end").attr("y"));
+    xB = parseInt($("#flag_begin").attr("y"));
+    yB = parseInt($("#flag_begin").attr("x"));
     
     //couts
     couts[xA] = new Object();
@@ -280,6 +266,10 @@ function lancerAlgo(){
     do {
         action = 0;
         calculerCoutsVoisins();
+        
+        //màj timer
+        if(timeIsOut()) break;
+        
     } while (action > 0);
 
     //desactiver les boutons 
@@ -295,6 +285,10 @@ function lancerAlgo(){
 
     //colorer
     colorerLesCases(chemin);
+}
+function arreterAlgo(){
+    alert(DELAY_SECONDS + " secondes écoulées");
+    location.reload();
 }
 function lancerAleatoire(){
     //retirer les murs partout
@@ -520,3 +514,14 @@ function randomBetween(min, max){
     return Math.floor(Math.random() * max) + min;
 }
 
+function timeIsOut(){
+    if(Date.now() - timer >= DELAY_SECONDS*1000){
+        Swal.fire({
+            icon: 'error',
+            title: 'Fin',
+            text: 'Temps maximal de calcul atteint',
+            footer: 'Voici le chemin trouvé pour le moment'
+          });
+        return true;
+    }
+}

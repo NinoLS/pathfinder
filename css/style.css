@@ -99,3 +99,7 @@ td input{
 .hidden{
     display:none;
 }
+
+table{
+    margin-top:3%;
+}

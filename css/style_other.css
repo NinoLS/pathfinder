@@ -1,0 +1,87 @@
+/* variables */
+:root{
+    --yellow-orange: #F3C98B;
+    --cyan: #006D99;
+    --w-btn: 120px;
+}
+
+.btn{
+    background-color: unset;
+    /* border:1.5px solid black; */
+    border:0;
+
+    font-weight: 550;
+    transition: color 330ms ease-in-out;
+    width:var(--w-btn);
+
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.btn-sm{
+    width:40px;
+}
+
+.btn:hover, .btn:focus{
+    color:var(--yellow-orange);
+    cursor: pointer;
+}
+
+.btn:focus{
+    outline: unset;
+}
+
+.btn-disabled:hover, .btn-disabled:focus{
+    color:grey;
+    cursor: pointer;
+}
+.btn-disabled:hover .b-top, .btn-disabled:focus .b-top{
+    display: none;
+}
+.btn-disabled:hover .b-bottom, .btn-disabled:focus .b-bottom{
+    display:none;
+}
+
+/*  */
+.b-top{
+    top:10px;
+    margin-bottom: 5px;
+}
+.b-bottom{
+    top: 34px;
+    margin-top: 5px;
+}
+.btn:hover .b-top, .btn:focus .b-top{
+    margin-bottom: 3px;
+    animation: borderY 500ms forwards ease-in-out;
+}
+.btn:hover .b-bottom, .btn:focus .b-bottom{
+    margin-top: 3px;
+    animation: borderY_r 500ms forwards ease-in-out;
+}
+
+@keyframes borderY {
+    from{
+        border: 1px solid var(--yellow-orange);
+        background-color:var(--yellow-orange);
+        width:0px;
+    }
+    to{
+        border: 0.5px solid var(--yellow-orange);
+        background-color:var(--yellow-orange);
+        width:105px;
+    }
+}
+@keyframes borderY_r {
+    from{
+        border: 1px solid var(--yellow-orange);
+        background-color:var(--yellow-orange);
+        width:0px;
+        margin-left:105px;
+    }
+    to{
+        border: 0.5px solid     ;
+        background-color:var(--yellow-orange);
+        width:105px;
+    }
+}
